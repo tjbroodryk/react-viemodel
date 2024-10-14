@@ -17,7 +17,7 @@ This project aims to provide an simple and efficient **ViewModel pattern** using
 To install the necessary dependencies:
 
 ```bash
-npm install react-viewmodel
+npm install @tjbroodryk/react-viewmodel
 ```
 
 ---

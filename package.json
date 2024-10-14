@@ -1,5 +1,5 @@
 {
-  "name": "react-viewmodel",
+  "name": "@tjaybroodryk/react-viewmodel",
   "version": "1.0.0",
   "description": "A simple state management library for React using a view-model pattern.",
   "scripts": {
@@ -64,6 +64,9 @@
   "peerDependencies": {
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "release": {
     "branches": [
