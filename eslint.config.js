@@ -14,13 +14,18 @@ module.exports = {
     }
   },
   rules: {
-    'prettier/prettier': 'error', // Make prettier errors show as ESLint errors
+    'prettier/prettier': 'error', // Prettier errors as ESLint errors
     'react/prop-types': 'off', // Disable prop-types rule, as you use TypeScript
-    '@typescript-eslint/explicit-module-boundary-types': 'off' // Adjust rules for your coding style
+    '@typescript-eslint/explicit-module-boundary-types': 'off' // Adjust rules to fit your style
   },
   settings: {
     react: {
       version: 'detect'
     }
-  }
+  },
+  ignores: [
+    'node_modules',
+    'build',
+    'dist'
+  ]
 };

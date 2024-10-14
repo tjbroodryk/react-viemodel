@@ -1,4 +1,11 @@
-import React, { createContext, useContext, ReactNode, useEffect, useState, useRef } from 'react';
+import React, {
+  createContext,
+  useContext,
+  ReactNode,
+  useEffect,
+  useState,
+  useRef,
+} from 'react';
 
 import { useMemo } from 'react';
 
@@ -11,11 +18,14 @@ export function useViewModel<T extends Watchable>(stateController: T): T {
   const proxyState = useMemo(() => {
     return new Proxy(stateController, {
       set(target, prop: string | symbol, value) {
-      if (target[prop as keyof T] !== value && target.properties.includes(prop as string)) {
+        if (
+          target[prop as keyof T] !== value &&
+          target.properties.includes(prop as string)
+        ) {
           target[prop as keyof T] = value;
         }
         return true;
-      }
+      },
     });
   }, [stateController]);
 
@@ -25,7 +35,13 @@ export function useViewModel<T extends Watchable>(stateController: T): T {
 // Context definition
 const StateContext = createContext<any>(null);
 
-export function ViewModelProvider<T extends Watchable>({ children, model: initialState }: { children: ReactNode; model: T }) {
+export function ViewModelProvider<T extends Watchable>({
+  children,
+  model: initialState,
+}: {
+  children: ReactNode;
+  model: T;
+}) {
   const stateController = useViewModel(initialState); // Proxy the state
 
   return (
@@ -44,8 +60,10 @@ export function useViewModelContext<T>() {
   return context;
 }
 
-
-export function useSubscribe<T, P>(stateController: T, selector: (state: T) => P): P{
+export function useSubscribe<T, P>(
+  stateController: T,
+  selector: (state: T) => P,
+): P {
   const [, forceUpdate] = useState(0);
   const selectedValue = useRef<P>(selector(stateController)); // Store selected property value
 
@@ -70,12 +88,12 @@ export function useSubscribe<T, P>(stateController: T, selector: (state: T) => P
   }, [stateController, selector]);
 
   // Return the current selected value
-  return selectedValue.current
+  return selectedValue.current;
 }
 
 export const vm = {
   ViewModelProvider,
   useViewModel,
   useSubscribe,
-  useViewModelContext
-}
+  useViewModelContext,
+};
