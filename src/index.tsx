@@ -14,22 +14,46 @@ export interface Watchable {
 }
 
 export function useViewModel<T extends Watchable>(stateController: T): T {
-  // Wrap the state controller in a Proxy
-  const proxyState = useMemo(() => {
-    return new Proxy(stateController, {
+  const createProxy = (obj: any): any => {
+    const handler: ProxyHandler<any> = {
+      get(target, prop: string | symbol, receiver) {
+        const value = Reflect.get(target, prop, receiver);
+
+        // If the property is an object and implements Watchable, recursively apply a proxy
+        if (
+          typeof value === 'object' &&
+          value !== null &&
+          'properties' in value
+        ) {
+          const watchableValue = value as Watchable;
+          // Only proxy if it implements Watchable and the property is declared as watchable
+          if (watchableValue.properties.includes(prop as string)) {
+            return createProxy(watchableValue);
+          }
+        }
+
+        return value;
+      },
       set(target, prop: string | symbol, value) {
+        const isNestedProp = typeof prop === 'string' && prop.includes('.');
+
+        // Only allow setting if the property is watchable
         if (
           target[prop as keyof T] !== value &&
-          target.properties.includes(prop as string)
+          (target.properties.includes(prop as string) || isNestedProp)
         ) {
           target[prop as keyof T] = value;
         }
+
         return true;
       },
-    });
-  }, [stateController]);
+    };
 
-  return proxyState;
+    return new Proxy(obj, handler);
+  };
+
+  // Create the proxy for the initial stateController
+  return useMemo(() => createProxy(stateController), [stateController]);
 }
 
 // Context definition

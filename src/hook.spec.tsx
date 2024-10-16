@@ -5,9 +5,18 @@ import { vm, Watchable } from './index'; // Assuming hooks are imported from the
 import { ReactNode, useRef } from 'react';
 
 // Dummy state class
+class NestedState implements Watchable {
+  foo = 'bar';
+  properties = ['foo'];
+
+  setFoo(newFoo: string) {
+    this.foo = newFoo;
+  }
+}
 class MyState implements Watchable {
   count = 0;
   text = '';
+  nested = new NestedState();
   properties = ['count', 'text'];
 
   increment() {
@@ -67,6 +76,39 @@ describe('useViewModel and useSubscribe', () => {
 
     // Count should still be 1, because only text changed
     expect(screen.getByText('Count: 1')).toBeDefined();
+  });
+
+  test('subscribes to nested property and triggers re-render only when count changes', () => {
+    const state = new MyState();
+
+    const CountComponent = () => {
+      const foo = vm.useSubscribe(state, (s) => s.nested.foo);
+      const renderCount = useRef(0); // Counter for the number of renders
+      renderCount.current += 1; // Increment on each render
+
+      return (
+        <div>
+          <div>Foo: {foo}</div>
+          <p>Renders: {renderCount.current}</p>
+        </div>
+      );
+    };
+
+    const { rerender } = renderWithProvider(<CountComponent />, state);
+
+    // Initial render, count should be 0
+    expect(screen.getByText('Foo: bar')).toBeDefined();
+
+    // Act to change count
+    act(() => {
+      state.nested.setFoo('baz');
+    });
+
+    // Trigger re-render
+    rerender(<CountComponent />);
+
+    // After state change, count should update to 1
+    expect(screen.getByText('Foo: baz')).toBeDefined();
   });
 
   test('does not re-render when unrelated property changes', () => {
