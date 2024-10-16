@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/tjbroodryk/react-viewmodel/compare/v1.0.0...v1.0.1) (2024-10-16)
+
+
+### Bug Fixes
+
+* watchable nested properties ([b16dc44](https://github.com/tjbroodryk/react-viewmodel/commit/b16dc445e35f5d0716ebe25e0e8ab261ee11d474))
+
 # 1.0.0 (2024-10-16)
 
 

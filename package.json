@@ -1,6 +1,6 @@
 {
   "name": "@tjaybroodryk/react-viewmodel",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A simple state management library for React using a view-model pattern.",
   "scripts": {
     "build": "rimraf dist && rollup -c",
