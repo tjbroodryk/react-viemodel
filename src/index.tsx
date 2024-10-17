@@ -20,13 +20,15 @@ export function useViewModel<T extends Watchable>(stateController: T): T {
         const value = Reflect.get(target, prop, receiver);
 
         // If the property is an object and implements Watchable, recursively apply a proxy
-        if (
-          typeof value === 'object' &&
-          value !== null &&
-          'properties' in value
-        ) {
+        if (typeof value === 'object' && value !== null && 'properties' in value) {
           const watchableValue = value as Watchable;
-          // Only proxy if it implements Watchable and the property is declared as watchable
+
+          // Dynamically calculate properties for objects like `nodes`
+          if (typeof target === 'object' && !Array.isArray(target) && target !== null) {
+            // The properties array will be the dynamic keys of the object (like `nodes`)
+            watchableValue.properties = Object.keys(target);
+          }
+
           if (watchableValue.properties.includes(prop as string)) {
             return createProxy(watchableValue);
           }
@@ -104,11 +106,6 @@ export function useSubscribe<T, P>(
     // For simplicity, we'll just rely on React's rerender mechanism through forceUpdate
 
     checkForUpdates(); // Initial check on mount
-
-    // Cleanup (if necessary)
-    return () => {
-      // Cleanup any observers if needed
-    };
   }, [stateController, selector]);
 
   // Return the current selected value
