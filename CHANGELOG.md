@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/tjbroodryk/react-viewmodel/compare/v1.1.0...v1.1.1) (2024-10-17)
+
+
+### Bug Fixes
+
+* renaming properties to @[@properties](https://github.com/properties) ([4e8ecf4](https://github.com/tjbroodryk/react-viewmodel/commit/4e8ecf4111e1b2d39b1a9d88634efa7726727851))
+
 # [1.1.0](https://github.com/tjbroodryk/react-viewmodel/compare/v1.0.1...v1.1.0) (2024-10-17)
 
 
