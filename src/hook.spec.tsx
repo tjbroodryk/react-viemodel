@@ -190,5 +190,5 @@ describe('useViewModel and useSubscribe', () => {
 
     // Text should still be empty, because only nested property changed
     expect(screen.getByText('Text:')).toBeDefined();
-  })
+  });
 });
