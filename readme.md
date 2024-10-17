@@ -166,7 +166,7 @@ To ensure the behavior of the ViewModel and hooks, tests are written using **Vit
 To run tests:
 
 ```bash
-npx vitest
+yarn test
 ```
 
 ---

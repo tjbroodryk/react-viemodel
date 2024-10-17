@@ -10,7 +10,7 @@ import React, {
 import { useMemo } from 'react';
 
 export interface Watchable {
-  properties: string[];
+  '@@properties': string[];
 }
 
 export function useViewModel<T extends Watchable>(stateController: T): T {
@@ -34,10 +34,10 @@ export function useViewModel<T extends Watchable>(stateController: T): T {
             target !== null
           ) {
             // The properties array will be the dynamic keys of the object (like `nodes`)
-            watchableValue.properties = Object.keys(target);
+            watchableValue['@@properties'] = Object.keys(target);
           }
 
-          if (watchableValue.properties.includes(prop as string)) {
+          if (watchableValue['@@properties'].includes(prop as string)) {
             return createProxy(watchableValue);
           }
         }

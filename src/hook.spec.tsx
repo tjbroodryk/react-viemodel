@@ -1,5 +1,5 @@
 import React from 'react';
-import { renderHook, act } from '@testing-library/react-hooks';
+import { act } from '@testing-library/react-hooks';
 import { render, screen } from '@testing-library/react';
 import { vm, Watchable } from './index'; // Assuming hooks are imported from the same file
 import { ReactNode, useRef } from 'react';
@@ -7,7 +7,7 @@ import { ReactNode, useRef } from 'react';
 // Dummy state class
 class NestedState implements Watchable {
   foo = 'bar';
-  properties = ['foo'];
+  '@@properties' = ['foo'];
 
   setFoo(newFoo: string) {
     this.foo = newFoo;
@@ -17,7 +17,9 @@ class MyState implements Watchable {
   count = 0;
   text = '';
   nested = new NestedState();
-  properties = ['count', 'text'];
+  other = 'unwatched';
+
+  '@@properties' = ['count', 'text'];
 
   increment() {
     this.count++;
@@ -25,6 +27,10 @@ class MyState implements Watchable {
 
   setText(newText: string) {
     this.text = newText;
+  }
+
+  setOther(newOther: string) {
+    this.other = newOther;
   }
 }
 
@@ -160,4 +166,29 @@ describe('useViewModel and useSubscribe', () => {
     // Text should update after state change
     expect(screen.getByText('Text: Hello, World!')).toBeDefined();
   });
+
+  test('do not rerender when unwatched property changes', () => {
+    const state = new MyState();
+
+    const TextComponent = () => {
+      const text = vm.useSubscribe(state, (s) => s.text);
+      return <div>Text: {text}</div>;
+    };
+
+    const { rerender } = renderWithProvider(<TextComponent />, state);
+
+    // Initial render, text should be empty
+    expect(screen.getByText('Text:')).toBeDefined();
+
+    // Change unwatched property
+    act(() => {
+      state.setOther('New Value');
+    });
+
+    // Trigger re-render
+    rerender(<TextComponent />);
+
+    // Text should still be empty, because only nested property changed
+    expect(screen.getByText('Text:')).toBeDefined();
+  })
 });
