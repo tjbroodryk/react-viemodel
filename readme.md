@@ -48,7 +48,7 @@ class MyViewModel {
   count = 0;
   text = '';
   other = ''
-  properties = ['count', 'text']; // Define the properties to watch
+  ['@@properties'] = ['count', 'text']; // Define the properties to watch
 
   increment() {
     this.count++;
