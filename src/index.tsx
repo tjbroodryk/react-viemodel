@@ -20,11 +20,19 @@ export function useViewModel<T extends Watchable>(stateController: T): T {
         const value = Reflect.get(target, prop, receiver);
 
         // If the property is an object and implements Watchable, recursively apply a proxy
-        if (typeof value === 'object' && value !== null && 'properties' in value) {
+        if (
+          typeof value === 'object' &&
+          value !== null &&
+          'properties' in value
+        ) {
           const watchableValue = value as Watchable;
 
           // Dynamically calculate properties for objects like `nodes`
-          if (typeof target === 'object' && !Array.isArray(target) && target !== null) {
+          if (
+            typeof target === 'object' &&
+            !Array.isArray(target) &&
+            target !== null
+          ) {
             // The properties array will be the dynamic keys of the object (like `nodes`)
             watchableValue.properties = Object.keys(target);
           }
