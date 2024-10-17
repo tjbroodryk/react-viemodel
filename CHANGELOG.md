@@ -1,3 +1,11 @@
+# [1.1.0](https://github.com/tjbroodryk/react-viewmodel/compare/v1.0.1...v1.1.0) (2024-10-17)
+
+
+### Features
+
+* allow subscribing to record properties ([66f6ef5](https://github.com/tjbroodryk/react-viewmodel/commit/66f6ef5f2fd9b6409fa69f13b0520a18148a9e08))
+* allow subscribing to record properties ([4711b79](https://github.com/tjbroodryk/react-viewmodel/commit/4711b793cf89de0d349c6eb411303f1b31279847))
+
 ## [1.0.1](https://github.com/tjbroodryk/react-viewmodel/compare/v1.0.0...v1.0.1) (2024-10-16)
 
 
